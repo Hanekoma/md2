@@ -1,0 +1,63 @@
+{'kernel': 'linear', 'C': 1000}
+
+Grid scores on development set:
+
+0.474 (+/-0.001) for {'kernel': 'rbf', 'gamma': 0.001, 'C': 1}
+0.474 (+/-0.001) for {'kernel': 'rbf', 'gamma': 0.0001, 'C': 1}
+0.474 (+/-0.001) for {'kernel': 'rbf', 'gamma': 0.001, 'C': 10}
+0.474 (+/-0.001) for {'kernel': 'rbf', 'gamma': 0.0001, 'C': 10}
+0.474 (+/-0.001) for {'kernel': 'rbf', 'gamma': 0.001, 'C': 100}
+0.474 (+/-0.001) for {'kernel': 'rbf', 'gamma': 0.0001, 'C': 100}
+0.707 (+/-0.097) for {'kernel': 'rbf', 'gamma': 0.001, 'C': 1000}
+0.474 (+/-0.001) for {'kernel': 'rbf', 'gamma': 0.0001, 'C': 1000}
+0.716 (+/-0.096) for {'kernel': 'linear', 'C': 1}
+0.722 (+/-0.069) for {'kernel': 'linear', 'C': 10}
+0.714 (+/-0.043) for {'kernel': 'linear', 'C': 100}
+0.733 (+/-0.065) for {'kernel': 'linear', 'C': 1000}
+
+Detailed classification report:
+
+The model is trained on the full development set.
+The scores are computed on the full evaluation set.
+
+             precision    recall  f1-score   support
+
+   -_50000.       0.96      0.98      0.97      2345
+    50000+.       0.51      0.36      0.42       155
+
+avg / total       0.93      0.94      0.93      2500
+
+
+# Tuning hyper-parameters for recall
+
+Best parameters set found on development set:
+
+{'kernel': 'linear', 'C': 1000}
+
+Grid scores on development set:
+
+0.500 (+/-0.000) for {'kernel': 'rbf', 'gamma': 0.001, 'C': 1}
+0.500 (+/-0.000) for {'kernel': 'rbf', 'gamma': 0.0001, 'C': 1}
+0.500 (+/-0.000) for {'kernel': 'rbf', 'gamma': 0.001, 'C': 10}
+0.500 (+/-0.000) for {'kernel': 'rbf', 'gamma': 0.0001, 'C': 10}
+0.500 (+/-0.000) for {'kernel': 'rbf', 'gamma': 0.001, 'C': 100}
+0.500 (+/-0.000) for {'kernel': 'rbf', 'gamma': 0.0001, 'C': 100}
+0.621 (+/-0.058) for {'kernel': 'rbf', 'gamma': 0.001, 'C': 1000}
+0.500 (+/-0.001) for {'kernel': 'rbf', 'gamma': 0.0001, 'C': 1000}
+0.593 (+/-0.060) for {'kernel': 'linear', 'C': 1}
+0.643 (+/-0.048) for {'kernel': 'linear', 'C': 10}
+0.654 (+/-0.032) for {'kernel': 'linear', 'C': 100}
+0.680 (+/-0.040) for {'kernel': 'linear', 'C': 1000}
+
+Detailed classification report:
+
+The model is trained on the full development set.
+The scores are computed on the full evaluation set.
+
+             precision    recall  f1-score   support
+
+   -_50000.       0.96      0.98      0.97      2345
+    50000+.       0.51      0.36      0.42       155
+
+avg / total       0.93      0.94      0.93      2500
+
