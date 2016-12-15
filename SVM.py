@@ -6,7 +6,7 @@ from sklearn import metrics
 from sklearn.cross_validation import cross_val_score
 from sklearn import svm
 
-url = "http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data"
+url = "https://doc-04-20-docs.googleusercontent.com/docs/securesc/osjkbq4hhpniq345amjh9hsp5olv3c99/181cltk6hpksqjju2ridp53bj7qa2efn/1481817600000/13264354433125755015/10308915816099072449/0BzOuT6s50TL4eHFUTFE5V1BEN1U?e=download&nonce=63ghqij6hhb7c&user=10308915816099072449&hash=ufv3h7qh066lm43act8rnp39t09kmp9v"
 
 headers = ['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal Width', 'Class']
 dataset = pd.read_csv(url, header=None, names=headers)
