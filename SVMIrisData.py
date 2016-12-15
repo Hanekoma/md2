@@ -50,7 +50,7 @@ def transformGetData(df):  # esta funcion debe devolver los datos en un np.array
 
 def mainfunction():
     # Loading the Digits dataset
-    url = "C:\Users\sergi\Downloads\censusbueno.csv"
+    url = "../KNN_Method_MD/5000Census.csv"
     df = pd.read_csv(url)
     X = transformGetData(df)
     y = np.array(df['TARGET'])
@@ -71,7 +71,7 @@ def mainfunction():
         print()
 
         clf = GridSearchCV(SVC(C=1), tuned_parameters, cv=5,
-                           scoring='%s_macro' % score)
+                           scoring='%s_macro' % score, n_jobs=8)
         clf.fit(X_train, y_train)
 
         print("Best parameters set found on development set:")
