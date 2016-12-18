@@ -6,22 +6,21 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 
-csv = pd.read_csv('../censusbuenodeverdad.csv')
+csv = pd.read_csv('../train.csv')
 # turn categoricals to new column with 0 or 1 (except TARGET)
-cleaned = pd.get_dummies(csv, columns=['F_ACLSWKR', 'F_EDUCATION', 'F_STATUSMARIT', 'F_AMJIND', 'F_AMJOCC', 'F_RACE',
-                                       'F_ORIGIN', 'F_ASEX', 'F_AWKSTAT', 'F_FILESTATUS', 'F_HHDFMX', 'F_HHDREL',
-                                       'F_CONBIRTHFATH', 'F_CONBIRTHMOTH', 'F_PENATVTY', 'F_PRCITSHP'])
-cleaned_wo_target = cleaned.drop('TARGET', 1)
-x_train, x_test, y_train, y_test = train_test_split(cleaned_wo_target, cleaned['TARGET'], test_size=0.25)
+train = pd.get_dummies(csv, columns=['F_ACLSWKR', 'F_EDUCATION', 'F_STATUSMARIT', 'F_AMJIND', 'F_AMJOCC', 'F_RACE',
+                                     'F_ORIGIN', 'F_ASEX', 'F_AWKSTAT', 'F_FILESTATUS', 'F_HHDFMX', 'F_HHDREL',
+                                     'F_CONBIRTHFATH', 'F_CONBIRTHMOTH', 'F_PENATVTY', 'F_PRCITSHP'])
+train_wo_target = train.drop('TARGET', 1)
 
 
 def adaboost(estimator):
     estimator_name = type(estimator).__name__
     print("Adaboosting with estimator {}".format(estimator_name))
     classifier = AdaBoostClassifier(base_estimator=estimator, n_estimators=200)
-    target = y_train
+    target = train['TARGET']
 
-    classifier.fit(x_train, target)
+    classifier.fit(train_wo_target, target)
     with open('../{}'.format(estimator_name), 'wb') as file:
         print("Storing model of {} estimator".format(estimator_name))
         pickle.dump(obj=classifier, file=file)
@@ -38,5 +37,16 @@ if __name__ == '__main__':
             ds = pickle.load(file)
         with open('../DecisionTreeClassifier', 'rb') as file:
             dt = pickle.load(file)
-    print("The Adaboost method using decision stumps scores a precision of {}".format(ds.score(x_test, y_test)))
-    print("The Adaboost method using decision trees scores a precision of {}".format(dt.score(x_test, y_test)))
+    test_csv = pd.read_csv('../test.csv')
+    test_wo_label = test_csv.drop('TARGET', 1)
+    test = pd.get_dummies(test_wo_label)
+    missing_columns = [item for item in list(train_wo_target.keys()) if item not in list(test.keys())]
+    print("test dataset was missing {}; adding them with values 0".format(missing_columns))
+    for mc in missing_columns:
+        test[mc] = pd.Series(0, index=test.index)
+    dss = ds.score(test, test_csv['TARGET'])
+    print(
+        "The Adaboost method using decision stumps scores a precision of {}".format(dss))
+    dts = dt.score(test, test_csv['TARGET'])
+    print(
+        "The Adaboost method using decision trees scores a precision of {}".format(dts))
