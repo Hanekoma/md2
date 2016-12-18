@@ -1,12 +1,16 @@
 from __future__ import print_function
 import pandas as pd
 from sklearn import datasets
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.svm import SVC
 import numpy as np
 from sklearn.preprocessing import normalize
+from sklearn.decomposition import PCA
 
 def normalizeAttribute(attr1):
     a = np.array(attr1)
@@ -50,9 +54,9 @@ def transformGetData(df):  # esta funcion debe devolver los datos en un np.array
 
 def mainfunction():
     # Loading the Digits dataset
-    url = "../KNN_Method_MD/5000Census.csv"
+    url = "C:\Users\sergi\Desktop\WorkSpace\md2\Census.csv"
     df = pd.read_csv(url)
-    X = transformGetData(df)
+    X = np.array(transformGetData(df))
     y = np.array(df['TARGET'])
 
     # Split the dataset in two equal parts
@@ -95,6 +99,49 @@ def mainfunction():
         y_true, y_pred = y_test, clf.predict(X_test)
         print(classification_report(y_true, y_pred))
         print()
+
+        pca = PCA().fit(X_train)
+
+        PcaX = pca.transform(X_train)
+
+        # Generate grid along first two principal components
+        multiples = np.arange(-2, 2, 0.1)
+        # steps along first component
+        for j in range(5):
+            for m in range(5):
+                first = multiples[:, np.newaxis] * pca.components_[j, :]
+                # steps along second component
+                second = multiples[:, np.newaxis] * pca.components_[m, :]
+                # combine
+                grid = first[np.newaxis, :, :] + second[:, np.newaxis, :]
+                flat_grid = grid.reshape(-1, X.shape[1])
+
+                # title for the plots
+                titles = ['SVC with rbf kernel',
+                          'SVC (linear kernel)\n with Fourier rbf feature map\n'
+                          'n_components=100',
+                          'SVC (linear kernel)\n with Nystroem rbf feature map\n'
+                          'n_components=100']
+
+                #plt.tight_layout()
+                plt.figure(figsize=(12, 5))
+                plt.subplot(1, 3, 1)
+                sv = clf.best_estimator_.fit(X_train, y_train)
+                Z = sv.predict(flat_grid)
+                Z2 = np.array(pd.get_dummies(Z)).astype(float)
+                # Put the result into a color plot
+                Z = Z2.reshape(grid.shape[:-1])
+                plt.contourf(multiples, multiples, Z, cmap=plt.cm.Paired)
+                plt.axis('off')
+                colors = np.array(pd.get_dummies(y_train)).astype(float)
+                le = LabelEncoder()
+                col2 = le.fit(y_train).transform(y_train)
+                # Plot also the training points
+                plt.scatter(PcaX[:, j], PcaX[:, m], c=col2, cmap=plt.cm.Paired)
+                plt.title("PCA:" + str(j) + "and: "+ str(m))
+                plt.show()
+
+
 
 
 if __name__ == '__main__':
