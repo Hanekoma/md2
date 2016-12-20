@@ -4,6 +4,7 @@ import pickle
 import pandas as pd
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import classification_report
 
 csv = pd.read_csv('../train.csv')
 # turn categoricals to new column with 0 or 1 (except TARGET)
@@ -50,3 +51,7 @@ if __name__ == '__main__':
         dts = dt.score(test, test_csv['TARGET'])
         print(
             "The Adaboost method using decision trees scores a precision of {} for n_estimators={}".format(dts, n))
+        print("Classification report for Adaboost DS n_estimators={}".format(n))
+        print(classification_report(test_csv['TARGET'], ds.predict(test)))
+        print("Classification report for Adaboost DT n_estimators={}".format(n))
+        print(classification_report(test_csv['TARGET'], dt.predict(test)))
